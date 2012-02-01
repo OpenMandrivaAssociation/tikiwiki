@@ -1,0 +1,13 @@
+diff -Naur -x '*~' tiki-6.0/lib/core/Zend/Validate/EmailAddress.php tiki-6.0-fix-Zend-module/lib/core/Zend/Validate/EmailAddress.php
+--- tiki-6.0/lib/core/Zend/Validate/EmailAddress.php	2010-07-26 21:14:47.000000000 +0000
++++ tiki-6.0-fix-Zend-module/lib/core/Zend/Validate/EmailAddress.php	2010-12-13 13:12:50.000000000 +0000
+@@ -483,8 +483,7 @@
+      */
+     private function _validateHostnamePart()
+     {
+-        $hostname = $this->_options['hostname']->setTranslator($this->getTranslator())
+-                         ->isValid($this->_hostname);
++        $hostname = $this->_options['hostname']->setTranslator($this->getTranslator());
+         if (!$hostname) {
+             $this->_error(self::INVALID_HOSTNAME);
+ 

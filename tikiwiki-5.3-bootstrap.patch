@@ -1,0 +1,29 @@
+diff -Naur -x '*~' tiki-5.3/db/tiki-db.php tiki-5.3-bootstrap//db/tiki-db.php
+--- tiki-5.3/db/tiki-db.php	2010-06-01 14:39:10.000000000 +0200
++++ tiki-5.3-bootstrap//db/tiki-db.php	2010-10-28 16:44:24.000000000 +0200
+@@ -98,7 +98,9 @@
+ $re = false;
+ $default_api_tiki = $api_tiki;
+ $api_tiki = '';
+-if ( file_exists($local_php) ) $re = include($local_php);
++if ( file_exists($local_php) && filesize($local_php) <> 0 ) {
++       	$re = include($local_php);
++}
+ if ( empty( $api_tiki ) ) {
+ 	$api_tiki_forced = false;
+ 	$api_tiki = $default_api_tiki;
+diff -Naur -x '*~' tiki-5.3/tiki-install.php tiki-5.3-bootstrap//tiki-install.php
+--- tiki-5.3/tiki-install.php	2010-08-04 06:18:52.000000000 +0200
++++ tiki-5.3-bootstrap//tiki-install.php	2010-10-28 16:48:11.000000000 +0200
+@@ -52,7 +52,10 @@
+ }
+ 
+ // Were database details defined before? If so, load them
+-if (file_exists('db/'.$tikidomainslash.'local.php')) {
++if (
++	file_exists('db/'.$tikidomainslash.'local.php') &&
++	filesize('db/'.$tikidomainslash.'local.php') <> 0
++) {
+ 	include 'db/'.$tikidomainslash.'local.php';
+ 
+ 	// In case of replication, ignore it during installer.

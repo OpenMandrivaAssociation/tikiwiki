@@ -1,0 +1,245 @@
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/commxmlrpc.php tiki-6.0-use-external-pear-modules/commxmlrpc.php
+--- tiki-6.0/commxmlrpc.php	2010-02-11 15:18:57.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/commxmlrpc.php	2010-12-10 15:09:42.000000000 +0000
+@@ -6,7 +6,7 @@
+ // $Id: commxmlrpc.php 25072 2010-02-11 15:18:57Z changi67 $
+ 
+ include_once("tiki-setup.php");
+-include_once ("lib/pear/XML/Server.php");
++include_once ("XML/RPC/Server.php");
+ include_once ('lib/commcenter/commlib.php');
+ 
+ if ($tikilib->get_preference("feature_comm", 'n') != 'y') {
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/headerlib.php tiki-6.0-use-external-pear-modules/lib/headerlib.php
+--- tiki-6.0/lib/headerlib.php	2010-10-27 18:32:30.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/headerlib.php	2010-12-10 15:34:25.000000000 +0000
+@@ -556,7 +556,7 @@
+ 
+ 	private function minify_css( $file ) {
+ 		global $tikipath, $tikiroot;
+-		require_once 'lib/pear/Minify/CSS.php';
++		require_once 'Minify/CSS.php';
+ 		if (strpos($file, $tikiroot) === 0) {
+ 			$file = substr( $file, strlen( $tikiroot ) );
+ 		}
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/ical/File.php tiki-6.0-use-external-pear-modules/lib/ical/File.php
+--- tiki-6.0/lib/ical/File.php	2010-02-11 13:27:17.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/ical/File.php	2010-12-10 15:09:42.000000000 +0000
+@@ -26,7 +26,7 @@
+ /**
+  * Requires PEAR
+  */
+-require_once 'lib/pear/PEAR.php';
++require_once 'PEAR.php';
+ 
+ /**
+  * The default number of bytes for reading
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/setup/compat.php tiki-6.0-use-external-pear-modules/lib/setup/compat.php
+--- tiki-6.0/lib/setup/compat.php	2010-02-13 08:51:29.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/setup/compat.php	2010-12-10 15:09:42.000000000 +0000
+@@ -14,7 +14,7 @@
+ {
+ 	function json_encode( $nodes )
+ 	{
+-		require_once 'lib/pear/Services/JSON.php';
++		require_once 'Services/JSON.php';
+ 
+ 		$json = new Services_JSON();
+ 		return $json->encode($nodes);
+@@ -22,7 +22,7 @@
+ 
+ 	function json_decode( $string )
+ 	{
+-		require_once 'lib/pear/Services/JSON.php';
++		require_once 'Services/JSON.php';
+ 
+ 		$json = new Services_JSON();
+ 		return $json->decode($string);
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/sheet/grid.php tiki-6.0-use-external-pear-modules/lib/sheet/grid.php
+--- tiki-6.0/lib/sheet/grid.php	2010-10-15 22:01:52.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/sheet/grid.php	2010-12-10 15:09:42.000000000 +0000
+@@ -9,7 +9,7 @@
+ ini_set( 'include_path', ini_get( 'include_path' ) . ":lib/sheet" );
+ 
+ // Nice dependencies, mostly for excel support. Don't try changing the order.
+-require_once( "lib/pear/PEAR.php" );
++require_once( "PEAR.php" );
+ require_once( "lib/sheet/excel/reader_ole.php" );
+ require_once( "lib/sheet/excel/reader.php" );
+ require_once( "lib/sheet/excel/writer/format.php" );
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/tikidate-pear-date.php tiki-6.0-use-external-pear-modules/lib/tikidate-pear-date.php
+--- tiki-6.0/lib/tikidate-pear-date.php	2010-02-13 09:11:55.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/tikidate-pear-date.php	2010-12-10 15:09:42.000000000 +0000
+@@ -23,7 +23,7 @@
+   exit;
+ }
+ 
+-require_once("lib/pear/Date.php");
++require_once("Date.php");
+ class TikiDate extends Date
+ {
+ 	var $trad = array("January","February","March","April","May","June","July","August","September","October","November","December","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Mon","Tue","Wed","Thu","Fri","Sat","Sun","of");
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/tikilib.php tiki-6.0-use-external-pear-modules/lib/tikilib.php
+--- tiki-6.0/lib/tikilib.php	2010-10-26 12:20:16.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/tikilib.php	2010-12-10 15:09:42.000000000 +0000
+@@ -79,7 +79,7 @@
+ 			$aSettingsRequest["proxy_host"]=$prefs['proxy_host'];
+ 			$aSettingsRequest["proxy_port"]=$prefs['proxy_port'];
+ 		}
+-		include_once ('lib/pear/HTTP/Request.php');
++		include_once ('HTTP/Request.php');
+ 		$aSettingsRequest['allowRedirects'] = true;
+ 		$req = new HTTP_Request($url, $aSettingsRequest);
+ 		$data="";
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/webdav/webdavlib.php tiki-6.0-use-external-pear-modules/lib/webdav/webdavlib.php
+--- tiki-6.0/lib/webdav/webdavlib.php	2010-02-13 21:56:01.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/webdav/webdavlib.php	2010-12-10 15:09:42.000000000 +0000
+@@ -5,7 +5,7 @@
+ // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+ // $Id: webdavlib.php 25191 2010-02-13 21:56:01Z changi67 $
+ 
+-require_once("lib/pear/HTTP/WebDAV/Client.php");
++require_once("HTTP/WebDAV/Client.php");
+ 
+ class WebDavLib extends HTTP_WebDAV_Client_Stream
+ {
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/webmail/mimeDecode.php tiki-6.0-use-external-pear-modules/lib/webmail/mimeDecode.php
+--- tiki-6.0/lib/webmail/mimeDecode.php	2010-02-13 21:52:33.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/webmail/mimeDecode.php	2010-12-10 15:09:42.000000000 +0000
+@@ -22,7 +22,7 @@
+ // +----------------------------------------------------------------------+
+ // | Authors: Richard Heyes <richard@phpguru.org>                         |
+ // +----------------------------------------------------------------------+
+-require_once ('lib/pear/PEAR.php');
++require_once ('PEAR.php');
+ 
+ //this script may only be included - so its better to die if called directly.
+ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/webmail/net_pop3.php tiki-6.0-use-external-pear-modules/lib/webmail/net_pop3.php
+--- tiki-6.0/lib/webmail/net_pop3.php	2010-03-15 12:33:50.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/webmail/net_pop3.php	2010-12-10 15:09:42.000000000 +0000
+@@ -39,7 +39,7 @@
+ // | Co-Author: Damian Fernandez Sosa <damlists@cnba.uba.ar>               |
+ // +-----------------------------------------------------------------------+
+ 
+-require_once('lib/pear/Net/Socket.php');
++require_once('Net/Socket.php');
+ 
+ /**
+ *  +----------------------------- IMPORTANT ------------------------------+
+@@ -188,7 +188,7 @@
+ 
+     function _raiseError($msg, $code =-1)
+     {
+-    include_once 'lib/pear/PEAR.php';
++    include_once 'PEAR.php';
+     return PEAR::raiseError($msg, $code);
+     }
+ 
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/lib/wiki/xmllib.php tiki-6.0-use-external-pear-modules/lib/wiki/xmllib.php
+--- tiki-6.0/lib/wiki/xmllib.php	2010-08-17 23:02:46.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/lib/wiki/xmllib.php	2010-12-10 15:09:42.000000000 +0000
+@@ -383,7 +383,7 @@
+ }
+ $xmllib = new XmlLib;
+ 
+-require_once('lib/pear/XML_Parser/Parser.php');
++require_once('XML/Parser.php');
+ class page_Parser extends XML_Parser
+ {
+ 	var $page;
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/remote.php tiki-6.0-use-external-pear-modules/remote.php
+--- tiki-6.0/remote.php	2010-07-23 14:18:08.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/remote.php	2010-12-10 15:09:42.000000000 +0000
+@@ -8,7 +8,7 @@
+ $version = "0.2";
+ 
+ include 'tiki-setup.php';
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ 
+ if ($prefs['feature_intertiki'] != 'y' || $prefs['feature_intertiki_server'] != 'y' || $prefs['feature_intertiki_mymaster']) {
+ 
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-filter-base.php tiki-6.0-use-external-pear-modules/tiki-filter-base.php
+--- tiki-6.0/tiki-filter-base.php	2010-10-25 12:07:39.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-filter-base.php	2010-12-10 15:35:30.000000000 +0000
+@@ -87,7 +87,6 @@
+ ));
+ 
+ require_once('lib/init/initlib.php');
+-TikiInit::prependIncludePath($tikipath.'lib/pear');
+ TikiInit::appendIncludePath($tikipath.'lib/core');
+ TikiInit::appendIncludePath($tikipath);
+ require_once('lib/core/DeclFilter.php');
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-freetag3d_xmlrpc.php tiki-6.0-use-external-pear-modules/tiki-freetag3d_xmlrpc.php
+--- tiki-6.0/tiki-freetag3d_xmlrpc.php	2010-02-11 16:44:33.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-freetag3d_xmlrpc.php	2010-12-10 15:09:42.000000000 +0000
+@@ -9,7 +9,7 @@
+ require_once('db/tiki-db.php');
+ require_once('lib/tikilib.php');
+ require_once('lib/userslib.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ require_once("lib/freetag/freetaglib.php");
+ 
+ 
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-send_objects.php tiki-6.0-use-external-pear-modules/tiki-send_objects.php
+--- tiki-6.0/tiki-send_objects.php	2010-02-19 14:44:35.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-send_objects.php	2010-12-10 15:09:42.000000000 +0000
+@@ -6,7 +6,7 @@
+ // $Id: tiki-send_objects.php 25393 2010-02-19 14:44:35Z lphuberdeau $
+ 
+ require_once ('tiki-setup.php');
+-include_once ("lib/pear/XML/Server.php");
++include_once ("XML/RPC/Server.php");
+ include_once ('lib/structures/structlib.php');
+ 
+ $access->check_feature('feature_comm');
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-users3d_xmlrpc.php tiki-6.0-use-external-pear-modules/tiki-users3d_xmlrpc.php
+--- tiki-6.0/tiki-users3d_xmlrpc.php	2010-02-11 17:07:03.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-users3d_xmlrpc.php	2010-12-10 15:09:42.000000000 +0000
+@@ -9,7 +9,7 @@
+ if ($prefs['feature_xmlrpc'] != 'y' || $prefs['wiki_feature_3d'] != 'y') {
+ 	die;
+ }
+-require_once ("XML/Server.php");
++require_once ("XML/RPC/Server.php");
+ $map = array("getSubGraph" => array("function" => "getSubGraph"));
+ $server = new XML_RPC_Server($map);
+ function getSubGraph($params) {
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-wiki3d_xmlrpc.php tiki-6.0-use-external-pear-modules/tiki-wiki3d_xmlrpc.php
+--- tiki-6.0/tiki-wiki3d_xmlrpc.php	2010-02-11 17:07:03.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-wiki3d_xmlrpc.php	2010-12-10 15:09:42.000000000 +0000
+@@ -10,7 +10,7 @@
+   die;  
+ }
+ 
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/wiki/wikilib.php');
+ 
+ $map = array ("getSubGraph" => array( "function" => "getSubGraph" ) );
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/tiki-xmlrpc_services.php tiki-6.0-use-external-pear-modules/tiki-xmlrpc_services.php
+--- tiki-6.0/tiki-xmlrpc_services.php	2010-07-05 15:33:52.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/tiki-xmlrpc_services.php	2010-12-10 15:09:42.000000000 +0000
+@@ -6,7 +6,7 @@
+ // $Id: tiki-xmlrpc_services.php 27859 2010-07-05 15:33:52Z sampaioprimo $
+ 
+ include_once('tiki-setup.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/blogs/bloglib.php');
+ if($prefs['feature_xmlrpc'] != 'y') {
+   die;  
+diff -Naur -x '*~' -x '*.orig' -x '*.rej' tiki-6.0/xmlrpc.php tiki-6.0-use-external-pear-modules/xmlrpc.php
+--- tiki-6.0/xmlrpc.php	2010-07-05 15:33:52.000000000 +0000
++++ tiki-6.0-use-external-pear-modules/xmlrpc.php	2010-12-10 15:09:42.000000000 +0000
+@@ -6,7 +6,7 @@
+ // $Id: xmlrpc.php 27859 2010-07-05 15:33:52Z sampaioprimo $
+ 
+ include_once('tiki-setup.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/blogs/bloglib.php');
+ if($prefs['feature_xmlrpc'] != 'y') {
+   die;  
