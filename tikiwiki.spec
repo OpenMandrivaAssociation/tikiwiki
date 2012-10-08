@@ -1,18 +1,18 @@
 %define _requires_exceptions pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))
 
 Name:       tikiwiki
-Version:    6.0
+Version:    6.6
 Release:    %mkrel 1
 Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
-License:    LGPL
+License:    LGPLv2
 Group:      System/Servers
 URL:        http://www.tikiwiki.org
 Source:     http://prdownloads.sourceforge.net/%{name}/tiki-%{version}.tar.bz2
-Patch0:     tikiwiki-6.0-use-external-pear-modules.patch
+Patch0:     tikiwiki-6.4-use-external-pear-modules.patch
 Patch1:     tikiwiki-6.0-use-external-smarty.patch
-Patch2:     tikiwiki-5.3-bootstrap.patch
+Patch2:     tikiwiki-6.4-bootstrap.patch
 Patch3:     tikiwiki-6.0-fix-Zend-module.patch
-Requires:   php-pdo
+Requires:   php-pdo_mysql
 Requires:   php-gd
 #Requires:   php-smarty
 Requires:   apache-mod_php
@@ -105,7 +105,9 @@ install -d -m 755 %{buildroot}%{_webappconfdir}
 cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
 # Tikiwiki Apache configuration
 Alias /tikiwiki/styles %{_localstatedir}/lib/%{name}/styles
+Alias /tiki/styles %{_localstatedir}/lib/%{name}/styles
 Alias /tikiwiki %{_datadir}/%{name}
+Alias /tiki %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
     Options -FollowSymLinks
@@ -164,7 +166,12 @@ Alias /tikiwiki %{_datadir}/%{name}
 <Directory %{_localstatedir}/lib/%{name}/db>
     Deny from all
 </Directory>
+
+# Below part is required to enable SEFURLs
+
 EOF
+
+cat _htaccess >> %{buildroot}%{_webappconfdir}/%{name}.conf
 
 %clean
 rm -rf %{buildroot}
@@ -189,6 +196,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 6.6-1mdv2011.0
++ Revision: 762926
+- new version 6.6
+- new version 6.5 (include bugfixes and security patches)
+- Update to 6.4
+
 * Mon Dec 13 2010 Guillaume Rousse <guillomovitch@mandriva.org> 6.0-1mdv2011.0
 + Revision: 620645
 - new version
@@ -220,7 +233,7 @@ rm -rf %{buildroot}
 + Revision: 254541
 - rebuild
 
-* Sun Mar 02 2008 Olivier Blin <oblin@mandriva.com> 1.9.10.1-1mdv2008.1
+* Sun Mar 02 2008 Olivier Blin <blino@mandriva.org> 1.9.10.1-1mdv2008.1
 + Revision: 177775
 - 1.9.10.1
 - restore BuildRoot
