@@ -1,8 +1,14 @@
+
+%if %{_use_internal_dependency_generator}
+%define __noautoreq 'pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))'
+%else
 %define _requires_exceptions pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))
+%endif.
+
 
 Name:       tikiwiki
 Version:    6.6
-Release:    %mkrel 1
+Release:    2
 Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
 License:    LGPLv2
 Group:      System/Servers
