@@ -8,7 +8,7 @@
 
 Name:       tikiwiki
 Version:    6.6
-Release:    2
+Release:    3
 Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
 License:    LGPLv2
 Group:      System/Servers
@@ -182,15 +182,7 @@ cat _htaccess >> %{buildroot}%{_webappconfdir}/%{name}.conf
 %clean
 rm -rf %{buildroot}
 
-%post
-%if %mdkversion < 201010
-%_post_webapp
-%endif
 
-%postun
-%if %mdkversion < 201010
-%_postun_webapp
-%endif
 
 %files
 %defattr(-,root,root)
