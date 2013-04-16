@@ -8,7 +8,7 @@
 
 Name:       tikiwiki
 Version:    6.6
-Release:    3
+Release:    4
 Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
 License:    LGPLv2
 Group:      System/Servers
