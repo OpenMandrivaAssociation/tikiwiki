@@ -109,8 +109,7 @@ Alias /tikiwiki %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
     Options -FollowSymLinks
-    Order allow,deny
-    Allow from all
+    Require all granted
 </Directory>
 
 <Directory %{_datadir}/%{name}/installer>
