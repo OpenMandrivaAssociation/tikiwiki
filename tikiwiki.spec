@@ -1,23 +1,21 @@
 %define _requires_exceptions pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))
 
-Name:       tikiwiki
-Version:    6.0
-Release:    %mkrel 1
-Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
-License:    LGPL
-Group:      System/Servers
-URL:        http://www.tikiwiki.org
-Source:     http://prdownloads.sourceforge.net/%{name}/tiki-%{version}.tar.bz2
-Patch0:     tikiwiki-6.0-use-external-pear-modules.patch
-Patch1:     tikiwiki-6.0-use-external-smarty.patch
-Patch2:     tikiwiki-5.3-bootstrap.patch
-Patch3:     tikiwiki-6.0-fix-Zend-module.patch
-Requires:   php-pdo
-Requires:   php-gd
-#Requires:   php-smarty
-Requires:   apache-mod_php
-BuildArch:  noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}
+Name:		tikiwiki
+Version:	6.0
+Release:	%mkrel 1
+Summary:	A PHP-based CMS/Groupware web application with a full Wiki environment
+License:	LGPL
+Group:		System/Servers
+URL:		http://www.tikiwiki.org
+Source0:	http://prdownloads.sourceforge.net/%{name}/tiki-%{version}.tar.bz2
+Patch0:		tikiwiki-6.0-use-external-pear-modules.patch
+Patch1:		tikiwiki-6.0-use-external-smarty.patch
+Patch2:		tikiwiki-5.3-bootstrap.patch
+Patch3:		tikiwiki-6.0-fix-Zend-module.patch
+Requires:	php-pdo
+Requires:	php-gd
+Requires:	apache-mod_php
+BuildArch:	noarch
 
 %description
 TikiWiki is an open source CMS/Groupware web application which provides
@@ -29,15 +27,12 @@ and much more.
 %prep
 %setup -q -n tiki-%{version}
 %patch0 -p 1
-#patch1 -p 1
 %patch2 -p 1
 %patch3 -p 1
 
 %build
 
 %install
-rm -rf %{buildroot}
-
 install -d -m 755 %{buildroot}%{_datadir}/%{name}
 cp *.php %{buildroot}%{_datadir}/%{name}
 cp *.png %{buildroot}%{_datadir}/%{name}
@@ -165,105 +160,9 @@ Alias /tikiwiki %{_datadir}/%{name}
 </Directory>
 EOF
 
-%clean
-rm -rf %{buildroot}
-
-%post
-%if %mdkversion < 201010
-%_post_webapp
-%endif
-
-%postun
-%if %mdkversion < 201010
-%_postun_webapp
-%endif
-
 %files
-%defattr(-,root,root)
 %doc INSTALL README
 %{_datadir}/tikiwiki
 %attr(-,apache,apache) %{_localstatedir}/lib/tikiwiki
 %config(noreplace) %{_webappconfdir}/%{name}.conf
 %config(noreplace) %attr(-,apache,apache) %{_sysconfdir}/%{name}.conf
-
-
-%changelog
-* Mon Dec 13 2010 Guillaume Rousse <guillomovitch@mandriva.org> 6.0-1mdv2011.0
-+ Revision: 620645
-- new version
-
-* Thu Oct 28 2010 Guillaume Rousse <guillomovitch@mandriva.org> 5.3-1mdv2011.0
-+ Revision: 589824
-- new version
-- strip private versions of pear libs and smarty
-
-* Tue Jan 19 2010 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-3mdv2010.1
-+ Revision: 493876
-- rely on filetrigger for reloading apache configuration begining with 2010.1, rpm-helper macros otherwise
-
-* Thu Sep 03 2009 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-2mdv2010.0
-+ Revision: 428430
-- don't forget to reload apache configuration after installation
-
-* Wed Sep 02 2009 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-1mdv2010.0
-+ Revision: 424583
-- new version
-- use FHS setup
-- TODO: drop private pear modules
-
-* Sun Aug 03 2008 Thierry Vignaud <tv@mandriva.org> 1.9.10.1-4mdv2009.0
-+ Revision: 261536
-- rebuild
-
-* Wed Jul 30 2008 Thierry Vignaud <tv@mandriva.org> 1.9.10.1-3mdv2009.0
-+ Revision: 254541
-- rebuild
-
-* Sun Mar 02 2008 Olivier Blin <oblin@mandriva.com> 1.9.10.1-1mdv2008.1
-+ Revision: 177775
-- 1.9.10.1
-- restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-* Sun Oct 28 2007 Funda Wang <fwang@mandriva.org> 1.9.8.3-1mdv2008.1
-+ Revision: 102874
-- update to new version 1.9.8.3
-
-* Wed Sep 19 2007 Guillaume Rousse <guillomovitch@mandriva.org> 1.9.7-2mdv2008.0
-+ Revision: 90337
-- rebuild
-
-* Thu Sep 06 2007 Funda Wang <fwang@mandriva.org> 1.9.7-1mdv2008.0
-+ Revision: 80553
-- New version 1.9.7
-- Import tikiwiki
-
-
-
-* Tue Nov 01 2005 Michael Scherer <misc@mandriva.org> 1.9.2-1mdk
-- New release 1.9.2
-
-* Wed Oct 26 2005 Michael Scherer <misc@mandriva.org> 1.9.1.1-1mdk
-- New release 1.9.1.1, as reported by Franck Martin ( security fix )
-- mkrel
-- rpmbuildupdatable
-
-* Mon Sep 12 2005 Franck Martin <franck@sopac.org> 1.9.1-1mdk
-- security fix release
-
-* Thu Jul 21 2005 Franck Martin <franck@sopac.org> 1.9.0-1mdk
-- new release
-
-* Tue Apr 13 2004 Olivier Blin <blino@mandrake.org> 1.8.2-1mdk
-- fix rights on files
-- new release
-
-* Wed Mar 03 2004 Franck Martin <franck@sopac.org> 1.8-1mdk
-- First Mandrake release
-- From Olivier Blin <blino@mandrake.org> :
-  - own dir
-  - fix setup.sh not to chown/chgrp files
-  - replace Copyright tag by License tag
-  - use System/Servers group
