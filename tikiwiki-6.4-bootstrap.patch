@@ -1,7 +1,8 @@
-diff -Naur -x '*~' tiki-5.3/db/tiki-db.php tiki-5.3-bootstrap//db/tiki-db.php
---- tiki-5.3/db/tiki-db.php	2010-06-01 14:39:10.000000000 +0200
-+++ tiki-5.3-bootstrap//db/tiki-db.php	2010-10-28 16:44:24.000000000 +0200
-@@ -98,7 +98,9 @@
+Index: tiki-6.4/db/tiki-db.php
+===================================================================
+--- tiki-6.4.orig/db/tiki-db.php
++++ tiki-6.4/db/tiki-db.php
+@@ -98,7 +98,9 @@ $tikidomainslash = (!empty($tikidomain)
  $re = false;
  $default_api_tiki = $api_tiki;
  $api_tiki = '';
@@ -12,11 +13,12 @@ diff -Naur -x '*~' tiki-5.3/db/tiki-db.php tiki-5.3-bootstrap//db/tiki-db.php
  if ( empty( $api_tiki ) ) {
  	$api_tiki_forced = false;
  	$api_tiki = $default_api_tiki;
-diff -Naur -x '*~' tiki-5.3/tiki-install.php tiki-5.3-bootstrap//tiki-install.php
---- tiki-5.3/tiki-install.php	2010-08-04 06:18:52.000000000 +0200
-+++ tiki-5.3-bootstrap//tiki-install.php	2010-10-28 16:48:11.000000000 +0200
-@@ -52,7 +52,10 @@
- }
+Index: tiki-6.4/tiki-install.php
+===================================================================
+--- tiki-6.4.orig/tiki-install.php
++++ tiki-6.4/tiki-install.php
+@@ -44,7 +44,10 @@ require_once 'lib/core/TikiDb/Adodb.php'
+ require_once 'lib/core/TikiDb/Pdo.php';
  
  // Were database details defined before? If so, load them
 -if (file_exists('db/'.$tikidomainslash.'local.php')) {

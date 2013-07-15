@@ -1,0 +1,13 @@
+diff -Nuar tiki-6.6.orig/_htaccess tiki-6.6/_htaccess
+--- tiki-6.6.orig/_htaccess	2013-07-11 12:19:09.666103268 +0400
++++ tiki-6.6/_htaccess	2013-07-11 12:20:29.073731946 +0400
+@@ -13,8 +13,7 @@
+ #
+ # This prevents reading of files with certain extensions.
+ <FilesMatch "\.(bak|inc|lib|sh|tpl|sql)$">
+-	order deny,allow
+-	deny from all
++	Require all denied
+ </FilesMatch>
+ 
+ <FilesMatch "\.(js|png|gif|jpg|css)$">

@@ -1,0 +1,264 @@
+Index: tiki-6.4/commxmlrpc.php
+===================================================================
+--- tiki-6.4.orig/commxmlrpc.php
++++ tiki-6.4/commxmlrpc.php
+@@ -6,7 +6,7 @@
+ // $Id: commxmlrpc.php 25072 2010-02-11 15:18:57Z changi67 $
+ 
+ include_once("tiki-setup.php");
+-include_once ("lib/pear/XML/Server.php");
++include_once ("XML/RPC/Server.php");
+ include_once ('lib/commcenter/commlib.php');
+ 
+ if ($tikilib->get_preference("feature_comm", 'n') != 'y') {
+Index: tiki-6.4/lib/headerlib.php
+===================================================================
+--- tiki-6.4.orig/lib/headerlib.php
++++ tiki-6.4/lib/headerlib.php
+@@ -560,7 +560,7 @@ class HeaderLib
+ 
+ 	public function minify_css( $file ) {
+ 		global $tikipath, $tikiroot;
+-		require_once 'lib/pear/Minify/CSS.php';
++		require_once 'Minify/CSS.php';
+ 		if (strpos($file, $tikiroot) === 0) {
+ 			$file = substr( $file, strlen( $tikiroot ) );
+ 		}
+Index: tiki-6.4/lib/ical/File.php
+===================================================================
+--- tiki-6.4.orig/lib/ical/File.php
++++ tiki-6.4/lib/ical/File.php
+@@ -26,7 +26,7 @@
+ /**
+  * Requires PEAR
+  */
+-require_once 'lib/pear/PEAR.php';
++require_once 'PEAR.php';
+ 
+ /**
+  * The default number of bytes for reading
+Index: tiki-6.4/lib/setup/compat.php
+===================================================================
+--- tiki-6.4.orig/lib/setup/compat.php
++++ tiki-6.4/lib/setup/compat.php
+@@ -14,7 +14,7 @@ if( ! function_exists( 'json_encode' ) )
+ {
+ 	function json_encode( $nodes )
+ 	{
+-		require_once 'lib/pear/Services/JSON.php';
++		require_once 'Services/JSON.php';
+ 
+ 		$json = new Services_JSON();
+ 		return $json->encode($nodes);
+@@ -22,7 +22,7 @@ if( ! function_exists( 'json_encode' ) )
+ 
+ 	function json_decode( $string )
+ 	{
+-		require_once 'lib/pear/Services/JSON.php';
++		require_once 'Services/JSON.php';
+ 
+ 		$json = new Services_JSON();
+ 		return $json->decode($string);
+Index: tiki-6.4/lib/sheet/grid.php
+===================================================================
+--- tiki-6.4.orig/lib/sheet/grid.php
++++ tiki-6.4/lib/sheet/grid.php
+@@ -9,7 +9,7 @@ if (strpos($_SERVER["SCRIPT_NAME"],basen
+ ini_set( 'include_path', ini_get( 'include_path' ) . ":lib/sheet" );
+ 
+ // Nice dependencies, mostly for excel support. Don't try changing the order.
+-require_once( "lib/pear/PEAR.php" );
++require_once( "PEAR.php" );
+ require_once( "lib/sheet/excel/reader_ole.php" );
+ require_once( "lib/sheet/excel/reader.php" );
+ require_once( "lib/sheet/excel/writer/format.php" );
+Index: tiki-6.4/lib/tikidate-pear-date.php
+===================================================================
+--- tiki-6.4.orig/lib/tikidate-pear-date.php
++++ tiki-6.4/lib/tikidate-pear-date.php
+@@ -23,7 +23,7 @@ if (strpos($_SERVER["SCRIPT_NAME"],basen
+   exit;
+ }
+ 
+-require_once("lib/pear/Date.php");
++require_once("Date.php");
+ class TikiDate extends Date
+ {
+ 	var $trad = array("January","February","March","April","May","June","July","August","September","October","November","December","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Mon","Tue","Wed","Thu","Fri","Sat","Sun","of");
+Index: tiki-6.4/lib/tikilib.php
+===================================================================
+--- tiki-6.4.orig/lib/tikilib.php
++++ tiki-6.4/lib/tikilib.php
+@@ -79,7 +79,7 @@ class TikiLib extends TikiDb_Bridge
+ 			$aSettingsRequest["proxy_host"]=$prefs['proxy_host'];
+ 			$aSettingsRequest["proxy_port"]=$prefs['proxy_port'];
+ 		}
+-		include_once ('lib/pear/HTTP/Request.php');
++		include_once ('HTTP/Request.php');
+ 		$aSettingsRequest['allowRedirects'] = true;
+ 		$req = new HTTP_Request($url, $aSettingsRequest);
+ 		$data="";
+Index: tiki-6.4/lib/webdav/webdavlib.php
+===================================================================
+--- tiki-6.4.orig/lib/webdav/webdavlib.php
++++ tiki-6.4/lib/webdav/webdavlib.php
+@@ -5,7 +5,7 @@
+ // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+ // $Id: webdavlib.php 25191 2010-02-13 21:56:01Z changi67 $
+ 
+-require_once("lib/pear/HTTP/WebDAV/Client.php");
++require_once("HTTP/WebDAV/Client.php");
+ 
+ class WebDavLib extends HTTP_WebDAV_Client_Stream
+ {
+Index: tiki-6.4/lib/webmail/mimeDecode.php
+===================================================================
+--- tiki-6.4.orig/lib/webmail/mimeDecode.php
++++ tiki-6.4/lib/webmail/mimeDecode.php
+@@ -22,7 +22,7 @@
+ // +----------------------------------------------------------------------+
+ // | Authors: Richard Heyes <richard@phpguru.org>                         |
+ // +----------------------------------------------------------------------+
+-require_once ('lib/pear/PEAR.php');
++require_once ('PEAR.php');
+ 
+ //this script may only be included - so its better to die if called directly.
+ if (strpos($_SERVER["SCRIPT_NAME"],basename(__FILE__)) !== false) {
+Index: tiki-6.4/lib/webmail/net_pop3.php
+===================================================================
+--- tiki-6.4.orig/lib/webmail/net_pop3.php
++++ tiki-6.4/lib/webmail/net_pop3.php
+@@ -39,7 +39,7 @@
+ // | Co-Author: Damian Fernandez Sosa <damlists@cnba.uba.ar>               |
+ // +-----------------------------------------------------------------------+
+ 
+-require_once('lib/pear/Net/Socket.php');
++require_once('Net/Socket.php');
+ 
+ /**
+ *  +----------------------------- IMPORTANT ------------------------------+
+@@ -188,7 +188,7 @@ class Net_POP3
+ 
+     function _raiseError($msg, $code =-1)
+     {
+-    include_once 'lib/pear/PEAR.php';
++    include_once 'PEAR.php';
+     return PEAR::raiseError($msg, $code);
+     }
+ 
+Index: tiki-6.4/lib/wiki/xmllib.php
+===================================================================
+--- tiki-6.4.orig/lib/wiki/xmllib.php
++++ tiki-6.4/lib/wiki/xmllib.php
+@@ -383,7 +383,7 @@ class XmlLib extends TikiLib
+ }
+ $xmllib = new XmlLib;
+ 
+-require_once('lib/pear/XML_Parser/Parser.php');
++require_once('XML/Parser.php');
+ class page_Parser extends XML_Parser
+ {
+ 	var $page;
+Index: tiki-6.4/remote.php
+===================================================================
+--- tiki-6.4.orig/remote.php
++++ tiki-6.4/remote.php
+@@ -8,7 +8,7 @@
+ $version = "0.2";
+ 
+ include 'tiki-setup.php';
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ 
+ if ($prefs['feature_intertiki'] != 'y' || $prefs['feature_intertiki_server'] != 'y' || $prefs['feature_intertiki_mymaster']) {
+ 
+Index: tiki-6.4/tiki-filter-base.php
+===================================================================
+--- tiki-6.4.orig/tiki-filter-base.php
++++ tiki-6.4/tiki-filter-base.php
+@@ -87,7 +87,6 @@ array_unshift($inputConfiguration,array(
+ ));
+ 
+ require_once('lib/init/initlib.php');
+-TikiInit::prependIncludePath($tikipath.'lib/pear');
+ TikiInit::appendIncludePath($tikipath.'lib/core');
+ TikiInit::appendIncludePath($tikipath);
+ require_once('lib/core/DeclFilter.php');
+Index: tiki-6.4/tiki-freetag3d_xmlrpc.php
+===================================================================
+--- tiki-6.4.orig/tiki-freetag3d_xmlrpc.php
++++ tiki-6.4/tiki-freetag3d_xmlrpc.php
+@@ -9,7 +9,7 @@ include_once("lib/init/initlib.php");
+ require_once('db/tiki-db.php');
+ require_once('lib/tikilib.php');
+ require_once('lib/userslib.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ require_once("lib/freetag/freetaglib.php");
+ 
+ 
+Index: tiki-6.4/tiki-send_objects.php
+===================================================================
+--- tiki-6.4.orig/tiki-send_objects.php
++++ tiki-6.4/tiki-send_objects.php
+@@ -6,7 +6,7 @@
+ // $Id: tiki-send_objects.php 32733 2011-02-15 21:06:34Z pkdille $
+ 
+ require_once ('tiki-setup.php');
+-include_once ("lib/pear/XML/Server.php");
++include_once ("XML/RPC/Server.php");
+ include_once ('lib/structures/structlib.php');
+ 
+ $access->check_feature('feature_comm');
+Index: tiki-6.4/tiki-users3d_xmlrpc.php
+===================================================================
+--- tiki-6.4.orig/tiki-users3d_xmlrpc.php
++++ tiki-6.4/tiki-users3d_xmlrpc.php
+@@ -9,7 +9,7 @@ include_once ('tiki-setup.php');
+ if ($prefs['feature_xmlrpc'] != 'y' || $prefs['wiki_feature_3d'] != 'y') {
+ 	die;
+ }
+-require_once ("XML/Server.php");
++require_once ("XML/RPC/Server.php");
+ $map = array("getSubGraph" => array("function" => "getSubGraph"));
+ $server = new XML_RPC_Server($map);
+ function getSubGraph($params) {
+Index: tiki-6.4/tiki-wiki3d_xmlrpc.php
+===================================================================
+--- tiki-6.4.orig/tiki-wiki3d_xmlrpc.php
++++ tiki-6.4/tiki-wiki3d_xmlrpc.php
+@@ -10,7 +10,7 @@ if($prefs['feature_xmlrpc'] != 'y' || $p
+   die;  
+ }
+ 
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/wiki/wikilib.php');
+ 
+ $map = array ("getSubGraph" => array( "function" => "getSubGraph" ) );
+Index: tiki-6.4/tiki-xmlrpc_services.php
+===================================================================
+--- tiki-6.4.orig/tiki-xmlrpc_services.php
++++ tiki-6.4/tiki-xmlrpc_services.php
+@@ -6,7 +6,7 @@
+ // $Id: tiki-xmlrpc_services.php 27859 2010-07-05 15:33:52Z sampaioprimo $
+ 
+ include_once('tiki-setup.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/blogs/bloglib.php');
+ if($prefs['feature_xmlrpc'] != 'y') {
+   die;  
+Index: tiki-6.4/xmlrpc.php
+===================================================================
+--- tiki-6.4.orig/xmlrpc.php
++++ tiki-6.4/xmlrpc.php
+@@ -6,7 +6,7 @@
+ // $Id: xmlrpc.php 32722 2011-02-15 21:02:57Z pkdille $
+ 
+ include_once('tiki-setup.php');
+-require_once("XML/Server.php");
++require_once("XML/RPC/Server.php");
+ include_once('lib/blogs/bloglib.php');
+ if($prefs['feature_xmlrpc'] != 'y') {
+   die;  

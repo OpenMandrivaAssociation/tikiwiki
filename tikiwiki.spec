@@ -1,21 +1,30 @@
-%define _requires_exceptions pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))
 
-Name:		tikiwiki
-Version:	6.0
-Release:	%mkrel 1
-Summary:	A PHP-based CMS/Groupware web application with a full Wiki environment
-License:	LGPL
-Group:		System/Servers
-URL:		http://www.tikiwiki.org
-Source0:	http://prdownloads.sourceforge.net/%{name}/tiki-%{version}.tar.bz2
-Patch0:		tikiwiki-6.0-use-external-pear-modules.patch
-Patch1:		tikiwiki-6.0-use-external-smarty.patch
-Patch2:		tikiwiki-5.3-bootstrap.patch
-Patch3:		tikiwiki-6.0-fix-Zend-module.patch
-Requires:	php-pdo
-Requires:	php-gd
-Requires:	apache-mod_php
-BuildArch:	noarch
+%if %{_use_internal_dependency_generator}
+%define __noautoreq 'pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))'
+%else
+%define _requires_exceptions pear(\\(smarty.*\\|lib.*\\|tiki.*\\|db.*\\|pear.*\\|File/iCal.*\\|PHPUnit.*\\|Zend.*\\|Minify.*\\))
+%endif.
+
+
+Name:       tikiwiki
+Version:    6.6
+Release:    10
+Summary:    A PHP-based CMS/Groupware web application with a full Wiki environment
+License:    LGPLv2
+Group:      System/Servers
+URL:        http://www.tikiwiki.org
+Source:     http://prdownloads.sourceforge.net/%{name}/tiki-%{version}.tar.bz2
+Patch0:     tikiwiki-6.4-use-external-pear-modules.patch
+Patch1:     tikiwiki-6.0-use-external-smarty.patch
+Patch2:     tikiwiki-6.4-bootstrap.patch
+Patch3:     tikiwiki-6.0-fix-Zend-module.patch
+Patch4:     _htaccess.patch
+Requires:   php-pdo_mysql
+Requires:   php-gd
+#Requires:   php-smarty
+Requires:   apache-mod_php
+BuildArch:  noarch
+BuildRoot:  %{_tmppath}/%{name}-%{version}
 
 %description
 TikiWiki is an open source CMS/Groupware web application which provides
@@ -27,12 +36,16 @@ and much more.
 %prep
 %setup -q -n tiki-%{version}
 %patch0 -p 1
+#patch1 -p 1
 %patch2 -p 1
 %patch3 -p 1
+%patch4 -p 1
 
 %build
 
 %install
+rm -rf %{buildroot}
+
 install -d -m 755 %{buildroot}%{_datadir}/%{name}
 cp *.php %{buildroot}%{_datadir}/%{name}
 cp *.png %{buildroot}%{_datadir}/%{name}
@@ -100,7 +113,9 @@ install -d -m 755 %{buildroot}%{_webappconfdir}
 cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
 # Tikiwiki Apache configuration
 Alias /tikiwiki/styles %{_localstatedir}/lib/%{name}/styles
+Alias /tiki/styles %{_localstatedir}/lib/%{name}/styles
 Alias /tikiwiki %{_datadir}/%{name}
+Alias /tiki %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
     Options -FollowSymLinks
@@ -109,60 +124,159 @@ Alias /tikiwiki %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}/installer>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Deny from all
+        Require all denied
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/img>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Deny from all
+        Require all denied
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/images>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Deny from all
+        Require all denied
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/lib>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Deny from all
+        Require all denied
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/lib/fckeditor>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Allow from all
+        Require all granted
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/lib/fckeditor_tiki>
     <FilesMatch "\.ph(p(3|4)?|tml)$">
-        Allow from all
+        Require all granted
     </FilesMatch>
 </Directory>
 
 <Directory %{_datadir}/%{name}/lang>
-    Deny from all
+    Require all denied
 </Directory>
 
 <Directory %{_datadir}/%{name}/modules>
-    Deny from all
+    Require all denied
 </Directory>
 
 <Directory %{_localstatedir}/lib/%{name}/styles>
-    Allow from all
+    Require all granted
 </Directory>
 
 <Directory %{_localstatedir}/lib/%{name}/db>
-    Deny from all
+    Require all denied
 </Directory>
+
+# Below part is required to enable SEFURLs
+
 EOF
 
+cat _htaccess >> %{buildroot}%{_webappconfdir}/%{name}.conf
+
+%clean
+rm -rf %{buildroot}
+
+
+
 %files
+%defattr(-,root,root)
 %doc INSTALL README
 %{_datadir}/tikiwiki
 %attr(-,apache,apache) %{_localstatedir}/lib/tikiwiki
 %config(noreplace) %{_webappconfdir}/%{name}.conf
 %config(noreplace) %attr(-,apache,apache) %{_sysconfdir}/%{name}.conf
+
+
+%changelog
+* Fri Jan 20 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 6.6-1mdv2011.0
++ Revision: 762926
+- new version 6.6
+- new version 6.5 (include bugfixes and security patches)
+- Update to 6.4
+
+* Mon Dec 13 2010 Guillaume Rousse <guillomovitch@mandriva.org> 6.0-1mdv2011.0
++ Revision: 620645
+- new version
+
+* Thu Oct 28 2010 Guillaume Rousse <guillomovitch@mandriva.org> 5.3-1mdv2011.0
++ Revision: 589824
+- new version
+- strip private versions of pear libs and smarty
+
+* Tue Jan 19 2010 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-3mdv2010.1
++ Revision: 493876
+- rely on filetrigger for reloading apache configuration begining with 2010.1, rpm-helper macros otherwise
+
+* Thu Sep 03 2009 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-2mdv2010.0
++ Revision: 428430
+- don't forget to reload apache configuration after installation
+
+* Wed Sep 02 2009 Guillaume Rousse <guillomovitch@mandriva.org> 3.1-1mdv2010.0
++ Revision: 424583
+- new version
+- use FHS setup
+- TODO: drop private pear modules
+
+* Sun Aug 03 2008 Thierry Vignaud <tv@mandriva.org> 1.9.10.1-4mdv2009.0
++ Revision: 261536
+- rebuild
+
+* Wed Jul 30 2008 Thierry Vignaud <tv@mandriva.org> 1.9.10.1-3mdv2009.0
++ Revision: 254541
+- rebuild
+
+* Sun Mar 02 2008 Olivier Blin <blino@mandriva.org> 1.9.10.1-1mdv2008.1
++ Revision: 177775
+- 1.9.10.1
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sun Oct 28 2007 Funda Wang <fwang@mandriva.org> 1.9.8.3-1mdv2008.1
++ Revision: 102874
+- update to new version 1.9.8.3
+
+* Wed Sep 19 2007 Guillaume Rousse <guillomovitch@mandriva.org> 1.9.7-2mdv2008.0
++ Revision: 90337
+- rebuild
+
+* Thu Sep 06 2007 Funda Wang <fwang@mandriva.org> 1.9.7-1mdv2008.0
++ Revision: 80553
+- New version 1.9.7
+- Import tikiwiki
+
+
+
+* Tue Nov 01 2005 Michael Scherer <misc@mandriva.org> 1.9.2-1mdk
+- New release 1.9.2
+
+* Wed Oct 26 2005 Michael Scherer <misc@mandriva.org> 1.9.1.1-1mdk
+- New release 1.9.1.1, as reported by Franck Martin ( security fix )
+- mkrel
+- rpmbuildupdatable
+
+* Mon Sep 12 2005 Franck Martin <franck@sopac.org> 1.9.1-1mdk
+- security fix release
+
+* Thu Jul 21 2005 Franck Martin <franck@sopac.org> 1.9.0-1mdk
+- new release
+
+* Tue Apr 13 2004 Olivier Blin <blino@mandrake.org> 1.8.2-1mdk
+- fix rights on files
+- new release
+
+* Wed Mar 03 2004 Franck Martin <franck@sopac.org> 1.8-1mdk
+- First Mandrake release
+- From Olivier Blin <blino@mandrake.org> :
+  - own dir
+  - fix setup.sh not to chown/chgrp files
+  - replace Copyright tag by License tag
+  - use System/Servers group
