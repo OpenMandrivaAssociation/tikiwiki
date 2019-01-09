@@ -1,2 +1,4 @@
+removed_sources:
+  tiki-6.6.tar.bz2: ff06965a2398182c6ca22d654cd06ee3069c7c26
 sources:
-  "tiki-6.6.tar.bz2": ff06965a2398182c6ca22d654cd06ee3069c7c26
+  tiki-12.0.tar.bz2: 1f3ce14c7e2c6390d6b7e5bdea04785244d19c58
